@@ -13,7 +13,7 @@
           <img v-bind:src="productImage" alt="" />
         </div>
         <div class="content">
-          <h1>{{ product }}</h1>
+          <h1>{{title}}</h1>
           <div class="stockInfo">
             <span class="green" v-if="inventory > 10">In Stock</span>
             <span class="amber" v-else-if="inventory > 0">Only few left</span>
@@ -25,12 +25,13 @@
             </li>
           </ul>
           <div class="variants">
-            <span v-for="variant in variants" :key="variant.variantId"
-              >{{ variant.variantColor }}
+            <span v-for="variant in variants" :key="variant.variantId" @mouseover="updateImage(variant.variantImage)"
+              class="colorBox" :style="{ backgroundColor: variant.variantColor}">
+            
             </span>
           </div>
           <div class="addCart">
-            <button v-on:click="addToCart">Add to Cart</button>
+            <button v-on:click="addToCart" :disabled="inventory <=0" :class="{disabledState: inventory <=0}">Add to Cart</button>
           </div>
         </div>
       </div>
@@ -43,9 +44,10 @@ export default {
   name: "Product",
   data() {
     return {
-      product: "Nike Air Force",
+      brand: "Nike ",
+      product: "Air Force",
       productImage: require("../assets/images/nike-black.jpg"),
-      inventory: 11,
+      inventory: 5,
       cart: 0,
       features: ["Durable leather", "Secure Lace Up", "Padded ankle collar"],
       variants: [
@@ -73,8 +75,16 @@ export default {
   methods: {
     addToCart() {
       this.cart += 1;
-
+    },
+    updateImage(variantImage) {
+      this.productImage = variantImage;
     }
-  }
+  },
+  computed: {
+    title() {
+      return this.brand + ' ' + this.product;
+    }
+  },
+
 };
 </script>
