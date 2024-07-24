@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form class="review-form">
+    <form class="review-form" @submit.prevent="onSubmit">
       <div class="row">
         <label for="name">Name:</label>
         <input type="text" id="name" v-model="name"/>
@@ -37,5 +37,19 @@ export default {
      
     };
   },
+  methods:{
+    onSubmit() {
+      let productReview = {
+        name: this.name,
+        review: this.review,
+        rating: this.rating
+      }
+      this.$emit('review-submitted', productReview)
+      this.name = null
+      this.review = null
+      this.rating =null
+ 
+    }
+  }
 };
 </script>

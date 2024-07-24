@@ -28,7 +28,21 @@
             <button v-on:click="addToCart" :disabled="inventory <=0" :class="{disabledState: inventory <=0}">Add to Cart</button>
           </div>
         </div>
-      </div><product-review></product-review>
+      </div>
+      <div class="reviews">
+        <h2>Reviews</h2>
+        <p>There are no reviews yet.</p>
+        <ul>
+          <li v-for="(review, index) in reviews" :key="index">
+            <p>{{ review.review }}</p>
+              <span>- {{ review.name }},
+                <strong>Rating:</strong> {{ review.rating }}
+              </span>
+            
+          </li>
+        </ul>
+      </div>
+      <product-review @review-submitted="addReview"></product-review>
     </div>
     
     <product-tabs></product-tabs>
@@ -74,6 +88,7 @@ export default {
           variantQty: 0,
         },
       ],
+      reviews:[]
     };
   },
   methods: {
@@ -83,6 +98,9 @@ export default {
     updateImage(index) {
       this.selectedVariant = index;
       console.log(index);
+    },
+    addReview(productReview) {
+      this.reviews.push(productReview);
     }
   },
   computed: {
