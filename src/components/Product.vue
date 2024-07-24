@@ -28,10 +28,10 @@
             <button v-on:click="addToCart" :disabled="inventory <=0" :class="{disabledState: inventory <=0}">Add to Cart</button>
           </div>
         </div>
-      </div>
+      </div><product-review></product-review>
     </div>
-    <ProductReview></ProductReview>
-    <ProductTabs></ProductTabs>
+    
+    <product-tabs></product-tabs>
   </div>
 </template>
 
