@@ -1,12 +1,5 @@
 <template>
   <div>
-    <header id="header">
-      <div class="container">
-        <div class="cart">
-          <p><i class="fas fa-shopping-cart"></i>{{ cart }}</p>
-        </div>
-      </div>
-    </header>
     <div class="container">
       <div class="product">
         <div class="image">
@@ -25,30 +18,41 @@
             </li>
           </ul>
           <div class="variants">
-            <span v-for="variant in variants" :key="variant.variantId" @mouseover="updateImage(variant.variantImage)"
+            <span v-for=" (variant, index) in variants" :key="variant.variantId" @mouseover="updateImage(index)"
               class="colorBox" :style="{ backgroundColor: variant.variantColor}">
             
             </span>
           </div>
+          <div class="shipping">Shipping: {{ shipping }}</div>
           <div class="addCart">
             <button v-on:click="addToCart" :disabled="inventory <=0" :class="{disabledState: inventory <=0}">Add to Cart</button>
           </div>
         </div>
       </div>
     </div>
+    <ProductReview></ProductReview>
+    <ProductTabs></ProductTabs>
   </div>
 </template>
 
 <script>
+import ProductReview from './Product-review.vue';
+import ProductTabs from './Product-tabs.vue';
+
 export default {
+  components: {ProductReview,ProductTabs},
   name: "Product",
+  props: {
+    member: {
+      type: Boolean,
+      required: true,
+    }
+  },
   data() {
     return {
       brand: "Nike ",
       product: "Air Force",
-      productImage: require("../assets/images/nike-black.jpg"),
-      inventory: 5,
-      cart: 0,
+      selectedVariant: 0,
       features: ["Durable leather", "Secure Lace Up", "Padded ankle collar"],
       variants: [
         {
@@ -74,15 +78,28 @@ export default {
   },
   methods: {
     addToCart() {
-      this.cart += 1;
+      this.$emit('addtocart', this.variants[this.selectedVariant].variantId)
     },
-    updateImage(variantImage) {
-      this.productImage = variantImage;
+    updateImage(index) {
+      this.selectedVariant = index;
+      console.log(index);
     }
   },
   computed: {
     title() {
       return this.brand + ' ' + this.product;
+    },
+    productImage(){
+      return this.variants[this.selectedVariant].variantImage;
+    },
+    inventory(){
+      return this.variants[this.selectedVariant].variantQty;
+    },
+    shipping(){
+      if(this.member){
+        return 'FREE'
+      }
+      return '$' + 2.99
     }
   },
 
