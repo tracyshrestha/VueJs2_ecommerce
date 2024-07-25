@@ -31,7 +31,7 @@
       </div>
       <div class="reviews">
         <h2>Reviews</h2>
-        <p>There are no reviews yet.</p>
+        <p v-if="!reviews.length">There are no reviews yet.</p>
         <ul>
           <li v-for="(review, index) in reviews" :key="index">
             <p>{{ review.review }}</p>
